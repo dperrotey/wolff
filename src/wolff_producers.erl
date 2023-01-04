@@ -145,7 +145,7 @@ do_pick_producer(Partitioner, Partition, Count, Workers) ->
       pick_next_alive(Workers, Partition, Count);
     false when Partitioner =:= roundrobin ->
       R = {Partition, Pid} = pick_next_alive(Workers, Partition, Count),
-      _ = put(wolff_roundrobin, (Partition + 1) rem Count),
+      _ = persistent_term:put({wolff_roundrobin}, (Partition + 1) rem Count),
       R;
     false ->
       erlang:error({producer_down, Pid})
@@ -183,11 +183,11 @@ pick_partition(Count, Partitioner, _) when not is_integer(Count);
 pick_partition(Count, random, _) ->
   rand:uniform(Count) - 1;
 pick_partition(Count, roundrobin, _) ->
-  Partition = case get(wolff_roundrobin) of
+  Partition = case persistent_term:get({wolff_roundrobin}) of
                 undefined -> 0;
                 Number    -> Number
               end,
-  _ = put(wolff_roundrobin, (Partition + 1) rem Count),
+  _ = persistent_term:put({wolff_roundrobin}, (Partition + 1) rem Count),
   Partition;
 pick_partition(Count, first_key_dispatch, [#{key := Key} | _]) ->
   erlang:phash2(Key) rem Count.
