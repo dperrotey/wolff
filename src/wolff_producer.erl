@@ -408,7 +408,7 @@ queue_item_marshaller(?Q_ITEM(_, _, _) = I) ->
 queue_item_marshaller(Bin) when is_binary(Bin) ->
   binary_to_term(Bin).
 
-get_item_ts(empty) -> now_ts().
+get_item_ts(empty) -> now_ts();
 get_item_ts(?Q_ITEM(_, Ts, _)) -> Ts.
 
 get_produce_version(#{conn := Conn} = St) when is_pid(Conn) ->
