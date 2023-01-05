@@ -183,9 +183,8 @@ pick_partition(Count, Partitioner, _) when not is_integer(Count);
 pick_partition(Count, random, _) ->
   rand:uniform(Count) - 1;
 pick_partition(Count, roundrobin, _) ->
-  Partition = case persistent_term:get({wolff_roundrobin}) of
-                undefined -> 0;
-                Number    -> Number
+  Partition = try persistent_term:get({wolff_roundrobin})
+              catch _:badarg -> 0
               end,
   _ = persistent_term:put({wolff_roundrobin}, (Partition + 1) rem Count),
   Partition;
