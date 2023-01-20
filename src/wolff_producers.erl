@@ -24,7 +24,7 @@
 %% gen_server callbacks
 -export([code_change/3, handle_call/3, handle_cast/2, handle_info/2, init/1, terminate/2]).
 
--export_type([producers/0]).
+-export_type([producers/0, partitioner/0]).
 
 -include("wolff.hrl").
 

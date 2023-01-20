@@ -46,7 +46,8 @@
                     max_linger_ms => non_neg_integer(),
                     max_send_ahead => non_neg_integer(),
                     compression => kpro:compress_option(),
-                    drop_if_highmem => boolean()
+                    drop_if_highmem => boolean(),
+                    partitioner = > wolff_producers:partitioner()
                    }.
 
 -define(no_timer, no_timer).
